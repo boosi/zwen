@@ -3,12 +3,17 @@ package autograd;
 import static java.lang.System.out;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Date;
 
 import javax.imageio.ImageIO;
+import javax.naming.spi.DirStateFactory.Result;
 
+import com.wolfram.jlink.Expr;
 import com.wolfram.jlink.KernelLink;
 import com.wolfram.jlink.MathLinkException;
 import com.wolfram.jlink.MathLinkFactory;
@@ -43,12 +48,7 @@ public final class Mathematic {
 		        kerLink.evaluate("tmp = renderImageGeneric[" + datestr + "], noteText,400,380, margin,72,50,20,20,20,20,20,50,50,50]");
 	            kerLink.discardAnswer();
 	            res = kerLink.evaluateToImage("Plot[" + expression + ", {x, -100, 100},PlotStyle -> {RGBColor[1, 0.5, 0.5]}]", -20, -10);
-	            out.println("Getting successfully.");
 	            kerLink.close();
-	            
-	            //{bgn 	写到磁盘文件；
-	            	//saveImage(res, "D:/temp/Users/test2.png");
-	            //}end
 			} catch (Exception ex) {
 				System.out.println("Error \n" + ex.getMessage());
 				kerLink.close();
@@ -63,7 +63,7 @@ public final class Mathematic {
 	 * @param expression	表达式；
 	 * @return				图片数据；
 	 */
-	public static byte[] getByteArray(String expression) {
+	public static byte[] getImageBytes(String expression) {
 		byte[] res = null;
 		kerLink = getKernelLink();
 		if (!kerLink.equals(null)) {
@@ -76,7 +76,7 @@ public final class Mathematic {
 		        kerLink.evaluate("tmp = renderImageGeneric[" + datestr + "], noteText,400,380, margin,72,50,20,20,20,20,20,50,50,50]");
 	            kerLink.discardAnswer();
 	            res = kerLink.evaluateToImage("Plot[" + expression + ", {x, -100, 100},PlotStyle -> {RGBColor[1, 0.5, 0.5]}]", -20, -10);
-	            out.println("Getting successfully.");
+	            //out.println("Getting successfully.");
 	            kerLink.close();
 			} catch (Exception ex) {
 				System.out.println("Error \n" + ex.getMessage());
@@ -86,6 +86,49 @@ public final class Mathematic {
 		return res;
 	}
 	
+	
+	public static String CovertToMathML(String expression) {
+		String result = "";
+		try {
+			kerLink = getKernelLink();
+			kerLink.discardAnswer();
+			kerLink.evaluate("ExportString[Unevaluated[" + expression + "], \"MathML\", \"Annotition\" -> {}]");
+	        kerLink.waitForAnswer();
+	        result = kerLink.getString();
+	        kerLink.close();
+		} catch (Exception ex) {
+			System.out.println("Error \n" + ex.getMessage());
+		}
+		return result;
+	}
+	
+	
+	public static String CovertToArith(String expression) {
+		String res = "";
+		//String pathname = "e:\\temp\\mathstr.xml";
+		try {
+			if (/*WriteFile(pathname, expression)*/true) {
+				kerLink = getKernelLink();
+				kerLink.discardAnswer();
+				Expr e1 = new Expr(expression);
+				Expr e2 = new Expr("MathML");
+				kerLink.evaluate("ImportString[" + e1 + "," + e2 + "]");
+				kerLink.waitForAnswer();
+				Expr result = kerLink.getExpr();
+				//out.println("Result 1. = " + result);
+				kerLink.evaluate("ToExpression[" + result + "]");
+				kerLink.waitForAnswer();
+				res = kerLink.getString();
+				//out.println("Result 2. = " + res);
+			}
+		}
+		catch (Exception ex) {
+			out.println("ex:" + ex.getMessage());
+		}
+		if (kerLink != null)
+			kerLink.close();
+		return res;
+	}
 	
 	/**
 	 * 得到 KernelLink对象；
@@ -130,5 +173,25 @@ public final class Mathematic {
 	    }
 	}
 	
+	
+	private static boolean WriteFile(String filePath, String contentText) {
+		File file = new File(filePath);
+		FileWriter fWriter = null;
+		try {
+			fWriter = new FileWriter(file);
+			fWriter.write(contentText);
+			fWriter.flush();
+			fWriter.close();
+			return true;
+		} 
+		catch (IOException iex) {
+			System.out.println("Write File Error \n" + iex.getMessage());
+			return false;
+		}
+		catch (Exception ex) {
+			System.out.println("Error \n" + ex.getMessage());
+			return false;
+		}
+	}
 	
 }

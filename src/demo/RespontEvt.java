@@ -3,35 +3,59 @@ package demo;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import autograd.Calculate;
+import autograd.ConfigPanel;
 import autograd.Mathematic;
-import others.HandleImage;
 
 
-public class RespontEvt implements ActionListener {
+public class RespontEvt implements ActionListener, WindowListener {
 
 	private JFileChooser 		chooser;
 	private GuiElements 		evtSource;
+	private ConfigPanel			configPane;
+	private JFrame				showFrame;
+	
+	public JFrame				mainFrm;
+	public String 				strConfig;
 	
 	
 	public RespontEvt(Object object) {
 		evtSource = (GuiElements) object;
+		configPane = new ConfigPanel(null);
 	}
 	
 	
 	
 	
-	
+	//{bgn	实现 ActionListener 接口方法
 	public void actionPerformed(ActionEvent e) {
 		//绘图
 		if (e.getSource().equals(evtSource.btnPlot)) {
+			String mathStr = evtSource.txEditor.getText();
+			if (mathStr.indexOf("<math") >= 0 || mathStr.indexOf("</math>") >= 0) {
+				evtSource.txMessage.setText("Can't use Math string drawing, \nplease into the equations of mathematical format, \nand then try again.");
+				return;
+			}
 			String expression = evtSource.txEditor.getText();
-			LoadPicture(Mathematic.getByteArray(expression));
+			LoadPicture(Calculate.getImageBytes(expression));
+		}
+		//转换 	to Math ML字符串 
+		if (e.getSource().equals(evtSource.btnCovert1)) {
+			String strExpr = evtSource.txEditor.getText();
+			evtSource.txMessage.setText(Calculate.Transform(strExpr, 2));
+		}
+		//转换 	to Arith字符串并计算结果
+		if (e.getSource().equals(evtSource.btnCovert2)) {
+			String strExpr = evtSource.txEditor.getText();
+			evtSource.txMessage.setText(Calculate.Transform(strExpr, -2));
 		}
 		//导入
 		if (e.getSource().equals(evtSource.btnImport)) {
@@ -41,14 +65,21 @@ public class RespontEvt implements ActionListener {
 				LoadPicture(chooser.getSelectedFile().getPath());
 			} 
 		}
+		//计算
+		if (e.getSource().equals(evtSource.btnCalcul)) {
+			String strExpr = evtSource.txEditor.getText();
+			evtSource.txMessage.setText(Calculate.Calculation(strExpr).toString());
+		}
 		//导出
 		if (e.getSource().equals(evtSource.btnExport)) {
-			//byte[] bytess = Mathematic.ExpressGraph(inputtxt.getText());
-			//LoadPicture(bytess);
-
-			//System.out.println(inputtxt.getText());
+			//暂时不设定此功能；
 		}
-		
+		//显示设定对话框
+		if (e.getSource().equals(evtSource.btnConfig)) {
+			showFrame = new ShowFrame(configPane, "Configurable Compare Schema", 320, 480);
+			showFrame.setVisible(true);
+			showFrame.addWindowListener(this);
+		}
 		
 		//清理；
 		if (e.getSource().equals(evtSource.btnClear)) {
@@ -62,13 +93,17 @@ public class RespontEvt implements ActionListener {
 			System.exit(JFrame.EXIT_ON_CLOSE);
 		}
 	}
-
+	//}end
 	
 	
-	public void LoadPicture(Object picObject) {
+	/**
+	 * 加载图片以显示；
+	 * @param picObject
+	 */
+	private void LoadPicture(Object picObject) {
 		evtSource.northPane.removeAll();
 		JLabel label = new JLabel("");
-		label.setAlignmentX(label.HORIZONTAL);
+		label.setAlignmentX(Label.CENTER_ALIGNMENT);
 		label.setAlignmentY(Label.CENTER_ALIGNMENT);
 		evtSource.northPane.add(label);
 		if (picObject instanceof String) {
@@ -81,11 +116,39 @@ public class RespontEvt implements ActionListener {
 		
 		evtSource.northPane.repaint();
 	}
-	
-	
-	
-	
-	
-	
+
+
+	//{bgn	实现 WindowListener 接口方法
+	public void windowActivated(WindowEvent e) {
+		
+	}
+
+	public void windowClosed(WindowEvent e) {
+		
+	}
+
+	public void windowClosing(WindowEvent e) {
+		
+	}
+
+	public void windowDeactivated(WindowEvent e) {
+		if (e.getSource().equals(showFrame)) {
+			strConfig = ((ShowFrame) showFrame).strConfig;
+			System.out.println(e.getSource());
+		}
+	}
+
+	public void windowDeiconified(WindowEvent e) {
+		
+	}
+
+	public void windowIconified(WindowEvent e) {
+		
+	}
+
+	public void windowOpened(WindowEvent e) {
+		
+	}
+	//}end
 	
 }

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Event;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -39,7 +40,7 @@ public class Userface extends JFrame {
 	private GuiElements 		ufs;
 	private GridBagLayout		layout;
 	private GridBagConstraints	gridbag;
-	
+	private RespontEvt			Evt;
 	
 	/**
 	 * 构造器；
@@ -49,9 +50,11 @@ public class Userface extends JFrame {
 		gridbag		= new GridBagConstraints();
 		layout			= new GridBagLayout();
 		ufs 			= new GuiElements();
+		Evt				= new RespontEvt(ufs);
+		Evt.mainFrm		= this;
 		contentPanel 	= getContentPane();
 		initialComponents();
-		addAction();
+		addEvents();
 	}
 	
 	
@@ -60,11 +63,11 @@ public class Userface extends JFrame {
 	 */
 	void initialComponents() {
 		setTitle("Auto-Griding 2.0");
-		setSize(800, 520);
+		setSize(840, 560);
 		setLocationRelativeTo(null);
 		contentPanel.setLayout(layout);
 		layout.rowWeights 		= new double[] {0.4, 0.0, 0.4, 0.0, 0.0};
-		layout.columnWeights	= new double[] {0.05, 0.95};
+		layout.columnWeights	= new double[] {0.25, 0.75};
 		gridbag.fill = GridBagConstraints.BOTH; 	// 组件彼此的间距
 		gridbag.insets = new Insets(2, 2, 2, 2); 	// 组件彼此的间距
 		gridbag.anchor = GridBagConstraints.CENTER;	// 当组件小于单元格，被锚在中间；
@@ -101,16 +104,21 @@ public class Userface extends JFrame {
 		gridbag.gridx 		= 1;
 		gridbag.gridy 		= 4;
 		add(ufs.southPane, gridbag);
-		ufs.southPane.setBackground(new Color(160,200,120));
+		ufs.southPane.setBackground(new Color(200,240,180));
+		ufs.southPane.setLayout(new BorderLayout(2, 2));
+		ufs.southPane.add(new JLabel("Message:"), BorderLayout.WEST);
+		ufs.southPane.add(ufs.labOutMsg, BorderLayout.CENTER);
 		
 		// 功能按钮一；
 		ufs.west1Pane.add(ufs.btnPlot);
-		ufs.west1Pane.add(ufs.btnCovert);
+		ufs.west1Pane.add(ufs.btnCovert1);
+		ufs.west1Pane.add(ufs.btnCovert2);	//ufs.btnCovert2.setEnabled(false);
 		ufs.west1Pane.add(ufs.btnImport);
+		ufs.west1Pane.add(ufs.btnCalcul);
 		// 功能按钮二；
-		ufs.west2Pane.add(ufs.btnCheck);
-		ufs.west2Pane.add(ufs.btnCompara);
-		ufs.west2Pane.add(ufs.btnExport);
+		ufs.west2Pane.add(ufs.btnCheck);	ufs.btnCheck.setEnabled(false);
+		ufs.west2Pane.add(ufs.btnCompara);	ufs.btnCompara.setEnabled(false);
+		ufs.west2Pane.add(ufs.btnExport);	ufs.btnExport.setEnabled(false);
 		//系统按钮
 		ufs.west3Pane.add(ufs.btnConfig);
 		ufs.west3Pane.add(ufs.btnClear);
@@ -129,19 +137,22 @@ public class Userface extends JFrame {
 	/**
 	 * 给控件添加动作；
 	 */
-	void addAction() {
+	void addEvents() {
 		// 功能按钮一；
-		ufs.btnPlot.	addActionListener(new RespontEvt(ufs));
-		ufs.btnCovert.	addActionListener(new RespontEvt(ufs));
-		ufs.btnImport.	addActionListener(new RespontEvt(ufs));
+		ufs.btnPlot.	addActionListener(Evt);
+		ufs.btnCovert1.	addActionListener(Evt);
+		ufs.btnCovert2.	addActionListener(Evt);
+		ufs.btnImport.	addActionListener(Evt);
+		ufs.btnCalcul.	addActionListener(Evt);
 		// 功能按钮二；
-		ufs.btnCheck.	addActionListener(new RespontEvt(ufs));
-		ufs.btnCompara.	addActionListener(new RespontEvt(ufs));
-		ufs.btnExport.	addActionListener(new RespontEvt(ufs));
+		ufs.btnCheck.	addActionListener(Evt);
+		ufs.btnCompara.	addActionListener(Evt);
+		ufs.btnExport.	addActionListener(Evt);
 		//系统按钮
-		ufs.btnCheck.	addActionListener(new RespontEvt(ufs));
-		ufs.btnClear.	addActionListener(new RespontEvt(ufs));
-		ufs.btnExit.	addActionListener(new RespontEvt(ufs));
+		ufs.btnCheck.	addActionListener(Evt);
+		ufs.btnConfig.	addActionListener(Evt);
+		ufs.btnClear.	addActionListener(Evt);
+		ufs.btnExit.	addActionListener(Evt);
 	}
 	
 	
