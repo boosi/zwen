@@ -78,7 +78,8 @@ public class Editor {
 			rst += "<mi>" + str.substring(0, 1) + "</mi>";
 			str = str.substring(1);
 		}
-		return "";
+		
+		return rst + "</math>";
 	}
 	
 	

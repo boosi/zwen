@@ -30,12 +30,19 @@ public class EventLog extends Exception {
 	 * @param strContent	异常的消息；
 	 * @throws Exception	当日志文件找不到的话，抛出异常；
 	 */
-	public void outLog(String strContent) throws Exception {
-		BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
-		String str = "\n=== " + getDate(0) + " ===\n" + strContent + "\n ---------- END ----------\n";
-		bw.write(str);
-		bw.flush();
-		bw.close();
+	public void outLog(String strContent) {
+		BufferedWriter bw;
+		String str;
+		try {
+			bw = new BufferedWriter(new FileWriter(file, true));
+			str = "\n=== " + getDate(0) + " ===\n" + strContent + "\n ---------- END ----------\n";
+			bw.write(str);
+			bw.flush();
+			bw.close();
+		}
+		catch (Exception ex) {
+			System.out.print(ex.getMessage());
+		}
 	}
 
 	/**

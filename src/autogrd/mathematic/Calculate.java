@@ -2,11 +2,6 @@ package autogrd.mathematic;
 
 import static java.lang.System.out;
 
-import java.awt.Dimension;
-import java.util.Date;
-
-import autogrd.WriteLog;
-
 import com.wolfram.jlink.Expr;
 import com.wolfram.jlink.KernelLink;
 import com.wolfram.jlink.MathLinkException;

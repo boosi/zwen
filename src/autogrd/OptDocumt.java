@@ -26,7 +26,22 @@ import org.w3c.dom.UserDataHandler;
 
 public class OptDocumt implements Document {
 
+	private Document doc;
 	
+	
+	public OptDocumt(String instr) {
+		InputStream				ins	= new ByteArrayInputStream(instr.getBytes());
+		DocumentBuilderFactory	fct = DocumentBuilderFactory.newInstance();
+		DocumentBuilder			bud; 
+		try {
+			bud = fct.newDocumentBuilder();
+			doc = bud.parse(ins);
+		}
+		catch (Exception ex) {
+			System.out.println("ERROR:\n\t"+ex.getMessage());
+			doc = null;
+		}
+	}
 	
 	
 	
@@ -49,6 +64,14 @@ public class OptDocumt implements Document {
 			return null;
 		}
 		return doc;
+	}
+	
+	
+	public Document getDocument() {
+		
+		
+		
+		return this;
 	}
 	
 	
@@ -301,7 +324,7 @@ public class OptDocumt implements Document {
 
 	public Element getDocumentElement() {
 		
-		return null;
+		return doc.getDocumentElement();
 	}
 
 	public String getDocumentURI() {
@@ -400,7 +423,8 @@ public class OptDocumt implements Document {
 	
 	//** For Tesr!
 	public static void main(String[] args) {
-		
+		OptDocumt optDocumt = new OptDocumt("<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>65</mn><mi>x</mi></math>");
+		System.out.println(optDocumt.getDocumentElement());
 
 	}
 

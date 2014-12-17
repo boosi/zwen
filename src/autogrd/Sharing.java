@@ -1,11 +1,15 @@
 package autogrd;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.w3c.dom.Document;
 
 public class Sharing {
 
 	
-	
+	public static int OPREAT_ANS = 0;
+	public static int OPREAT_USR = 1;
 	
 	
 	
@@ -19,10 +23,22 @@ public class Sharing {
 	}
 	
 	
+	/**
+	 * 判断方程式； 
+	 * @param document		文档对象；
+	 * @return				true，方程式；否则为表达式；
+	 */
+	public static boolean isEquation(Document document) {
+		
+		return false;
+	}
 	
 	
-	
-	
+	public static boolean isMathString(String instr) {
+		String rex = "<math[^>]*>.+</math>";
+		Matcher mat = Pattern.compile(rex).matcher(instr);
+		return mat.find();
+	}
 	
 	
 	

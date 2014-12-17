@@ -117,7 +117,7 @@ public class Userface extends JFrame {
 		ufs.west1Pane.add(ufs.btnCalcul);
 		// 功能按钮二；
 		ufs.west2Pane.add(ufs.btnCheck);	ufs.btnCheck.setEnabled(false);
-		ufs.west2Pane.add(ufs.btnCompara);	ufs.btnCompara.setEnabled(false);
+		ufs.west2Pane.add(ufs.btnCompara);	//ufs.btnCompara.setEnabled(false);
 		ufs.west2Pane.add(ufs.btnExport);	ufs.btnExport.setEnabled(false);
 		//系统按钮
 		ufs.west3Pane.add(ufs.btnConfig);

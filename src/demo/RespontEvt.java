@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import autogrd.Comparer;
 import autogrd.mathematic.Calculate;
 import autogrd.mathematic.Mathematic;
 
@@ -85,7 +86,14 @@ public class RespontEvt implements ActionListener {
 				}
 			});
 		}
-		
+		//比较
+		if (e.getSource().equals(evtSource.btnCompara)) {
+			int k = Comparer.Comparison(
+					evtSource.txEditor.getText(), 
+					evtSource.txMessage.getText(), 
+					true, "121");
+			evtSource.labOutMsg.setText(k + "");
+		}
 		//清理；
 		if (e.getSource().equals(evtSource.btnClear)) {
 			evtSource.txEditor.setText("");

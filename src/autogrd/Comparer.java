@@ -1,7 +1,5 @@
 package autogrd;
 
-import java.util.regex.Pattern;
-
 import org.w3c.dom.Document;
 
 
@@ -14,13 +12,17 @@ import org.w3c.dom.Document;
  */
 public class Comparer {
 	
-	public String strAns 	= "";		//答案
-	public String strUsr 	= "";		//输入
+	Inspector 	ipt;
+	Expression	exp;
+	Evaluate	evl;
+	Config 		conf;
+	Document	optAns;
+	Document	optUsr;
+	
+	public String strAns 	= "";
+	public String strUsr 	= "";
 	public boolean model 	= true;		//模式
 	public String strConf 	= "";		//设定
-	
-	public Document		optAns = null;
-	public Document		optUsr = null;
 	
 	
 	
@@ -28,15 +30,13 @@ public class Comparer {
 	/**
 	 * 构造器；
 	 */
-	public Comparer() {
-		
-	}
+	public Comparer() {	}
 	
 	/**
 	 * 构造器；
 	 * @param strans		//正确答案；
 	 * @param strusr		//用户输入；
-	 * @param isMath			//比较模式；
+	 * @param isMath		//比较模式；
 	 * @param strconf		//设定条件；
 	 */
 	public Comparer(String strans, String strusr, boolean isMath, String strconf) {
@@ -44,50 +44,6 @@ public class Comparer {
 		strUsr 		= strusr;
 		model 		= isMath;
 		strConf 	= strconf;
-	}
-	
-	
-	
-	/**
-	 * 调用此方法进行表达式比较；
-	 * @return		0，等价；否则，不等价；
-	 */
-	public int Compar() {
-		if (model) {
-			int chknum = checking();
-			if (chknum == 0) {
-				if (!Config.setConfmap())
-					return MsgCode.CONFIG_ERROR;
-				if (!Inspector.needful())
-					return MsgCode.TRANS_FAIL;
-				chknum = Inspector.checking();
-				if (chknum == 0) {
-					//检查字符串合理性；
-					
-					
-					
-					
-				
-				
-						optAns = OptDocumt.generatDocument(strAns);
-						optUsr = OptDocumt.generatDocument(strUsr);
-						if (optAns == null)
-								return -6800;
-						if (optUsr == null)
-								return -6900;
-				
-					
-						
-						
-						
-					chknum = Evaluate.EvalObject(optAns, optUsr);
-				}
-			}
-			return chknum;
-		}
-		else {
-			return strAns.equals(strUsr) ? 0 : -1000;
-		}
 	}
 	
 	
@@ -108,53 +64,109 @@ public class Comparer {
 	
 	
 	/**
+	 * 调用此方法进行表达式比较；
+	 * @return		0，等价；否则，不等价；
+	 */
+	private int Compar() {
+		if (model) {														//为真时 mathML 字符串方式比较；
+			int chknum = isEmpty();
+			if (chknum == 0) {
+				conf	= new Config(this); 
+				ipt 	= new Inspector(this);
+				exp 	= new Expression(this);
+				evl		= new Evaluate(this);
+			
+				try {
+					conf.setConfmap(strConf);								//设定比较条件；
+					if (!ipt.needful())
+						return MsgCode.TRANS_FAIL;
+					
+					chknum = ipt.check_prompt();							//检查字符串合理性；
+					if (chknum == 0) {
+						chknum = ipt.node_trim();
+						if (chknum == 0) {
+						
+							optAns = new OptDocumt(exp.transform(strAns));	//创建新对象；
+							optUsr = new OptDocumt(exp.transform(strUsr));
+							if (optAns == null)
+									return -6800;
+							if (optUsr == null)
+									return -6900;
+					
+							chknum = evl.EvalObject(optAns, optUsr);
+						}
+					}
+				}
+				catch (Exception ex) {
+					new EventLog().outLog(ex.getMessage());
+					chknum = -1010;
+				}
+			}
+			return chknum;
+		}
+		else {
+			return strAns.equals(strUsr) ? 0 : -1000;						//直接比较字符串；
+		}
+	}
+	
+	
+	
+	/**
 	 * 检查输入字符串是否合格；
 	 * @return		0，合格；其它，不合格；
 	 */
-	private int checking() {
-		String instr = "";
-		
-		if (strAns == null || strAns.equals(""))		//空；
+	private int isEmpty() {
+		if (strAns == null || strAns.equals(""))							//空；
 			return -3502;
 		if (strUsr == null || strUsr.equals("")) 
 			return -3502;
-		
-		if (Pattern.compile("<math[^>]*>.+</math>").matcher(strUsr).find()) {
-			instr = strUsr;
-		}
-		else  {											//不是 MathML 字符串；
-			if (Sharing.illicitChars(strUsr))			//非法字符；
+		if (!Sharing.isMathString(strAns))
+			strAns = editor.Editor.getMathStr(strAns);
+		if (!Sharing.isMathString(strUsr)) {
+			if (Sharing.illicitChars(strUsr))								//非法字符；
 				return -3012;
-			instr = editor.Editor.getMathStr(strUsr);	//转换为 MathML字符串；
+			strUsr = editor.Editor.getMathStr(strUsr);						//转换为 MathML字符串；
 		}
-		strUsr = instr;
 		return 0;
 	}
 
-}
-
-
-
-/**
- * 评估两个对象是否等价；
- * @author Zhengwen
- * 
- *17 Dec, 2014
- */
-class Evaluate {
-	public Evaluate() {
-		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// For test!
+	public static void main(String[] args) {
+		String s1 = "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>65</mn><mi>x</mi></math>";
+		String s2 = "24";
+		String s4 = "121";
+		boolean s3 = true;
+		int result = Comparison(s1,s2,s3,s4);
+		System.out.print("Com.return:\t" + result);
 	}
 	
 	
-	public static int EvalObject(Object obj1, Object obj2) {
-		
-		
-		return 0;
-	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }
+
+
 
 
 
@@ -175,8 +187,5 @@ class Remark {
 	 * 5. 进行赋值；（最终给未知变量赋值）
 	 * 6。 比较并返回结果；（返回比较结果）
 	 */
-	
-	
-	
 	
 }
