@@ -1,4 +1,4 @@
-package autogrd;
+package autogrd.mathematic;
 
 import static java.lang.System.out;
 

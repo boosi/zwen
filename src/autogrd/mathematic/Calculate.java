@@ -1,9 +1,11 @@
-package autogrd;
+package autogrd.mathematic;
 
 import static java.lang.System.out;
 
 import java.awt.Dimension;
 import java.util.Date;
+
+import autogrd.WriteLog;
 
 import com.wolfram.jlink.Expr;
 import com.wolfram.jlink.KernelLink;
@@ -66,7 +68,7 @@ public class Calculate {
             kLink.discardAnswer();
             result = kLink.evaluateToImage("Plot[" + expression + ", {x, -50, 50},PlotStyle -> {RGBColor[1, 0.5, 0.5]}]", -20, -10);
 		} catch (Exception ex) {
-			WriteLog.writelog("source: getImageBytes();\nerror: " + ex.getMessage());
+			//WriteLog.writelog("source: getImageBytes();\nerror: " + ex.getMessage());
 		}
 		kLink.terminateKernel();
 		

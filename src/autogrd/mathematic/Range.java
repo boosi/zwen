@@ -1,5 +1,14 @@
-package autogrd;
+package autogrd.mathematic;
 
+
+
+
+/**
+ * 配合 Mathematica 计算使用；
+ * @author Zhengwen
+ * 
+ *17 Dec, 2014
+ */
 public class Range {
 
 	private int x1 = 0;

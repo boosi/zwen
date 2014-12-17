@@ -14,7 +14,10 @@ public class Config {
 	
 	
 	
-	
+	public static boolean setConfmap() {
+		
+		return true;
+	}
 	
 	
 }

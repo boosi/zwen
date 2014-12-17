@@ -21,7 +21,7 @@ public final class Inspector {
 	 * @param wdoc		
 	 * @return
 	 */
-	public static boolean needful(Document wdoc) {
+	public static boolean needful(/*Document wdoc*/) {
 		
 		return false;
 	}
