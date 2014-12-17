@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import autograd.ConfigPanel;
+import autogrd.ConfigPanel;
 
 public class ShowFrame extends JFrame implements ActionListener {
 

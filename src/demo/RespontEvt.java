@@ -12,9 +12,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import autograd.Calculate;
-import autograd.ConfigPanel;
-import autograd.Mathematic;
+import autogrd.Calculate;
+import autogrd.ConfigPanel;
+import autogrd.Mathematic;
 
 
 public class RespontEvt implements ActionListener {
