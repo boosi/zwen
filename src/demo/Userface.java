@@ -112,7 +112,7 @@ public class Userface extends JFrame {
 		// 功能按钮一；
 		ufs.west1Pane.add(ufs.btnPlot);
 		ufs.west1Pane.add(ufs.btnCovert1);
-		ufs.west1Pane.add(ufs.btnCovert2);	//ufs.btnCovert2.setEnabled(false);
+		ufs.west1Pane.add(ufs.btnCovert2);
 		ufs.west1Pane.add(ufs.btnImport);
 		ufs.west1Pane.add(ufs.btnCalcul);
 		// 功能按钮二；

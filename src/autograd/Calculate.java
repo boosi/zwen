@@ -29,17 +29,10 @@ public class Calculate {
 	 * 获得链接对象；
 	 * @return		Mathematica 的连接对象；
 	 */
-	static KernelLink getLink() {
+	static KernelLink getLink() throws MathLinkException {
 		KernelLink 	link = null;
 		String[] argv = new String[] {linktype, mode, linkname, path};	//10.0版本；
-		try {
-			link = MathLinkFactory.createKernelLink(argv);
-		}
-		catch (MathLinkException mex) {
-			WriteLog.write(mex);
-		} catch (Exception ex) {
-			WriteLog.write(ex);
-		}
+		link = MathLinkFactory.createKernelLink(argv);
 		
 		return link;
 	}
@@ -61,10 +54,8 @@ public class Calculate {
 	public static byte[] getImageBytes(String expression, Range range, Range size) {
 		byte[] result = null;
 		
-		kLink = getLink();
-		if (kLink == null) 
-			return result;
 		try {
+			kLink = getLink();
 			kLink.discardAnswer();
 	        kLink.evaluate("");
 	        kLink.waitForAnswer();
@@ -77,7 +68,7 @@ public class Calculate {
 		} catch (Exception ex) {
 			WriteLog.writelog("source: getImageBytes();\nerror: " + ex.getMessage());
 		}
-		kLink.close();
+		kLink.terminateKernel();
 		
 		return result;
 	}
@@ -92,10 +83,8 @@ public class Calculate {
 	public static String Transform(String expression, int direct) {
 		String result = "";
 		
-		kLink = getLink();
-		if (kLink == null) 
-			return result;
 		try {
+			kLink = getLink();
 			kLink.discardAnswer();
 			Expr e1 = new Expr(expression);
 			Expr e2 = new Expr("MathML");
@@ -116,17 +105,16 @@ public class Calculate {
 		catch (Exception ex) {
 			out.println("source: Transform();\nerror:" + ex.getMessage());
 		}
-		kLink.close();
+		kLink.terminateKernel();
 		return result;
 	}
 	
 	
 	public static Expr Calculation(String expression) {
 		Expr result = null;
-		kLink = getLink();
-		if (kLink == null) 
-			return result;
+
 		try {
+			kLink = getLink();
 			Expr exp = new Expr(expression);
 			kLink.discardAnswer();
 			kLink.evaluate("ToExpression[" + exp + "]");
@@ -135,7 +123,7 @@ public class Calculate {
 		} catch (Exception ex) {
 			out.println("source: Calculation();\nerror:" + ex.getMessage());
 		}
-		kLink.close();
+		kLink.terminateKernel();
 		
 		return result;
 	}

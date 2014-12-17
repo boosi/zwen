@@ -3,6 +3,7 @@ package demo;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -16,7 +17,7 @@ import autograd.ConfigPanel;
 import autograd.Mathematic;
 
 
-public class RespontEvt implements ActionListener, WindowListener {
+public class RespontEvt implements ActionListener {
 
 	private JFileChooser 		chooser;
 	private GuiElements 		evtSource;
@@ -78,7 +79,12 @@ public class RespontEvt implements ActionListener, WindowListener {
 		if (e.getSource().equals(evtSource.btnConfig)) {
 			showFrame = new ShowFrame(configPane, "Configurable Compare Schema", 320, 480);
 			showFrame.setVisible(true);
-			showFrame.addWindowListener(this);
+			showFrame.addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					System.out.println("Button:");
+					System.out.println("Button:" + showFrame.getOwner());
+				}
+			});
 		}
 		
 		//清理；
@@ -131,12 +137,12 @@ public class RespontEvt implements ActionListener, WindowListener {
 		
 	}
 
-	public void windowDeactivated(WindowEvent e) {
-		if (e.getSource().equals(showFrame)) {
-			strConfig = ((ShowFrame) showFrame).strConfig;
-			System.out.println(e.getSource());
-		}
-	}
+//	public void windowDeactivated(WindowEvent e) {
+//		if (e.getSource().equals(showFrame)) {
+//			strConfig = ((ShowFrame) showFrame).strConfig;
+//			System.out.println(e.getSource());
+//		}
+//	}
 
 	public void windowDeiconified(WindowEvent e) {
 		
