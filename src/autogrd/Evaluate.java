@@ -13,8 +13,8 @@ import org.w3c.dom.Document;
  *17 Dec, 2014
  */
 public class Evaluate {
-
-	Comparer cmp = null;
+	/**与主线程通信（表示启动该类的主线程)*/
+	Comparer communicate = null;
 	
 	
 	
@@ -23,7 +23,7 @@ public class Evaluate {
 	 * 构造器；
 	 */
 	public Evaluate(Comparer comparer) {
-		cmp = comparer;
+		communicate = comparer;
 	}
 	
 	/**

@@ -24,12 +24,21 @@ import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 import org.w3c.dom.UserDataHandler;
 
-public class OptDocumt implements Document {
 
+
+/**
+ * 处理文档对象专用类；
+ * @author Zhengwen 
+ * @date 19 Dec, 2014
+ * @version Grading 3.0 Builder 008
+ */
+public class W3cDocument implements Document {
+	/**与主线程通信（表示启动该类的主线程)*/
+	Comparer communicate;
 	private Document doc;
 	
 	
-	public OptDocumt(String instr) {
+	public W3cDocument(String instr) {
 		InputStream				ins	= new ByteArrayInputStream(instr.getBytes());
 		DocumentBuilderFactory	fct = DocumentBuilderFactory.newInstance();
 		DocumentBuilder			bud; 
@@ -76,7 +85,7 @@ public class OptDocumt implements Document {
 	
 	
 	
-	//{bgn 	实现继承的接口方法；已实现代码的都会有说明文字；凡是在方法上没有说明文字的，都是没有实现的代码的方法；
+	//{bgn 	实现接口定义的方法；【已实现的代码的都会给出方法说明；故：凡方法上没有说明文字的，是未实现的虚代码（方法）；
 	public Node appendChild(Node arg0) throws DOMException {
 		
 		return null;
@@ -423,7 +432,7 @@ public class OptDocumt implements Document {
 	
 	//** For Tesr!
 	public static void main(String[] args) {
-		OptDocumt optDocumt = new OptDocumt("<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>65</mn><mi>x</mi></math>");
+		W3cDocument optDocumt = new W3cDocument("<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>65</mn><mi>x</mi></math>");
 		System.out.println(optDocumt.getDocumentElement());
 
 	}

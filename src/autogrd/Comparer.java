@@ -5,17 +5,17 @@ import org.w3c.dom.Document;
 
 
 /**
- * 库（比较）的主要类，启动比较程序；
- * @author Zhengwen
- * 
- *17 Dec, 2014
+ * （比较）库的主要类，启动比较程序；
+ * @author Zhengwen 
+ * @date 19 Dec, 2014
+ * @version Grading 3.0 Builder 008
  */
 public class Comparer {
 	
 	Inspector 	ipt;
-	Expression	exp;
+	Phrase		phrase;
 	Evaluate	evl;
-	Config 		conf;
+	Setting 	conf;
 	Document	optAns;
 	Document	optUsr;
 	
@@ -71,9 +71,9 @@ public class Comparer {
 		if (model) {														//为真时 mathML 字符串方式比较；
 			int chknum = isEmpty();
 			if (chknum == 0) {
-				conf	= new Config(this); 
+				conf	= new Setting(this); 
 				ipt 	= new Inspector(this);
-				exp 	= new Expression(this);
+				phrase 	= new Phrase(this);
 				evl		= new Evaluate(this);
 			
 				try {
@@ -86,8 +86,8 @@ public class Comparer {
 						chknum = ipt.node_trim();
 						if (chknum == 0) {
 						
-							optAns = new OptDocumt(exp.transform(strAns));	//创建新对象；
-							optUsr = new OptDocumt(exp.transform(strUsr));
+							optAns = new W3cDocument(phrase.transform(strAns));	//创建新对象；
+							optUsr = new W3cDocument(phrase.transform(strUsr));
 							if (optAns == null)
 									return -6800;
 							if (optUsr == null)
@@ -112,22 +112,29 @@ public class Comparer {
 	
 	
 	/**
-	 * 检查输入字符串是否合格；
-	 * @return		0，合格；其它，不合格；
+	 * 输入字符串是否为空或者符合要求的其他条件；
+	 * @return		0，符合；其它，不符合；
 	 */
 	private int isEmpty() {
-		if (strAns == null || strAns.equals(""))							//空；
+		int ret		= 0;
+		
+		if (strAns == null || strAns.equals("") || strUsr == null || strUsr.equals(""))		//空字串；
 			return -3502;
-		if (strUsr == null || strUsr.equals("")) 
-			return -3502;
-		if (!Sharing.isMathString(strAns))
+		
+		if (!Sharing.isMathString(strAns))									//不是 MathML 字符串，需要经过编辑；
 			strAns = editor.Editor.getMathStr(strAns);
-		if (!Sharing.isMathString(strUsr)) {
-			if (Sharing.illicitChars(strUsr))								//非法字符；
-				return -3012;
+		if (!Sharing.isMathString(strUsr)) 
 			strUsr = editor.Editor.getMathStr(strUsr);						//转换为 MathML字符串；
-		}
-		return 0;
+		
+		if (Sharing.illicitChars(strUsr))									//为“真”, 输入含有非法字符；
+			return -3012;
+		ret = RegularReview.formater(strUsr);								//检查空格、配对、标签等；
+		if (ret != 0)
+			return ret;
+		
+		
+		
+		return ret;
 	}
 
 	
@@ -146,7 +153,7 @@ public class Comparer {
 		String s4 = "121";
 		boolean s3 = true;
 		int result = Comparison(s1,s2,s3,s4);
-		System.out.print("Com.return:\t" + result);
+		System.out.print("\nResult of Compare:\t" + result);
 	}
 	
 	
@@ -180,12 +187,23 @@ public class Comparer {
 class Remark {
 	
 	/* 操作思路：
-	 * 1. 运行规范化程序，将不规范的 mathml 字符串代码规范为标准的字符串；EventQua
+	 * 1. 运行规范化程序，将不规范的 mathml 字符串代码规范为标准的字符串；
 	 * 2. 检查字符串是否符合比较的‘条件设定’；（不符合的要 Prompt）
 	 * 3. 将 mathml 字符串对象化为‘文档对象’；（对象化）
 	 * 4. 检查‘文档对象’是否合理及符合‘比较条件’；（以文档对象格式检查是否符合数学规范）
 	 * 5. 进行赋值；（最终给未知变量赋值）
 	 * 6。 比较并返回结果；（返回比较结果）
 	 */
+	
+	/*
+	 * 类的创建：
+	 * 1. 可以让该类继承 Thread 类，然后启动新的线程；
+	 * 2. 在新的线程中完成比较任务；
+	 * 3. 设定某个变量为返回值；
+	 * 4. 将比较结果返回给调用程序；	
+	 */
+	
+	
+	
 	
 }

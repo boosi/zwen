@@ -13,9 +13,9 @@ import java.util.regex.Pattern;
  * 
  *27 Nov, 2014
  */
-public class Config {
-
-	private Comparer cmp;
+public class Setting {
+	/** 与主线程通信（表示启动该类的主线程) */
+	Comparer communicate;
 	
 	
 	
@@ -25,13 +25,13 @@ public class Config {
 	
 	
 	
-	public Config() {
-		cmp = new Comparer();
+	public Setting() {
+		communicate = new Comparer();
 		initConfMap();
 	}
 	
-	public Config(Object conponentObject) {
-		cmp = (Comparer) conponentObject;
+	public Setting(Object conponentObject) {
+		communicate = (Comparer) conponentObject;
 		initConfMap();
 	}
 	

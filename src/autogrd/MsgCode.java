@@ -10,20 +10,23 @@ package autogrd;
  */
 public final class MsgCode {
 
+	public static int	SPEAC_CHAR				= -3010;			//非法空格；
+	public static int	ILLEGAL_CHARS			= -3012;			//非法字符；
+	public static int	REDUNDANCY_ZERO			= -3013;			//多余的“零”（冗余）；
+	
+	public static int 	INVALID_FORMAT			= -3502;			//残缺的格式；
+	public static int 	REDUNDANCY_TAG 			= -3504;			//多余标签；
 	
 	
 	
+	public static int 	ISEMPTY					= -6100;
+	public static int 	UNKOWN_ERROR			= -6600;			//未知的错误，此信息备用；
+	public static int 	CONFIG_ERROR 			= -6610;			//设定'比较条件'时出错误；详细：config.setconfigmap();
+	public static int 	TRANS_FAIL				= -6620;			//运行必要变换时出现错误；详细：Inspector.needful()
 	
 	
-	
-	public static int 	UNKOWN_ERROR		= -6600;			//未知的错误，此信息备用；
-	
-	public static int 	CONFIG_ERROR 		= -6610;			//设定'比较条件'时出错误；详细：config.setconfigmap();
-	
-	public static int 	TRANS_FAIL			= -6620;			//运行必要变换时出现错误；详细：Inspector.needful()
-	
-	
-	
+	public static int 	ANSWER_ERR				= -6800;			//正确答案无法有效转换为 DOM 对象；
+	public static int 	INPUT_ERR				= -6900;			//用户输入无法有效转换为 DOM 对象；
 	
 	
 	

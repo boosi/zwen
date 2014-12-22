@@ -12,9 +12,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import mathematica.Calculate;
+import mathematica.Mathematic;
 import autogrd.Comparer;
-import autogrd.mathematic.Calculate;
-import autogrd.mathematic.Mathematic;
 
 
 public class RespontEvt implements ActionListener {

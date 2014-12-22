@@ -18,8 +18,13 @@ public class Sharing {
 	 * @return		true，包含；false，不包含；
 	 */
 	public static boolean illicitChars(String instr) {
-		String rex = "[^\\w\\+\\-\\(\\)\\=\\<\\>,\\|\\{\\}\\:\\.\\u03B1-\\u03D6]";
-		return Pattern.compile(rex).matcher(instr).find();
+		String 	result = "", rex = "(?i)(?<=>)[^<>]+?(?=</)", 
+				rex2 = "[^\\w\\+\\-\\(\\)\\=\\<\\>,\\|\\{\\}\\:\\.(\\u03B1-\\u03D6)(&#(?:215|247|945|946|952|960|8745|8746|8804|8805|9651);)]";
+		Matcher mat = Pattern.compile(rex).matcher(instr);
+		while (mat.find())
+			result += mat.group(0);		//去掉标签的全部文本；
+		
+		return Pattern.compile(rex2).matcher(result).find();		//在其中查询是否含有不合理字符；
 	}
 	
 	

@@ -13,8 +13,10 @@ import org.w3c.dom.Document;
  *17 Dec, 2014
  */
 public final class Inspector {
+	/**与主线程通信（表示启动该类的主线程)*/
+	Comparer communicate = null;
 	
-	private Comparer cmp = null;			//当前线程的根；
+	
 	private Map<String, String> confmap;
 	
 	public Document document = null;		//当前‘文档对象’；
@@ -23,14 +25,14 @@ public final class Inspector {
 	
 	
 	public Inspector() {
-		cmp 		= new Comparer();
-		confmap		= cmp.conf.ConfigMap;
+		communicate 		= new Comparer();
+		confmap		= communicate.conf.ConfigMap;
 	}
 	
 	
 	public Inspector(Object conponentObject) {
-		cmp 		= (Comparer) conponentObject;
-		confmap		= cmp.conf.ConfigMap;
+		communicate 		= (Comparer) conponentObject;
+		confmap		= communicate.conf.ConfigMap;
 	}
 	
 	
@@ -42,7 +44,7 @@ public final class Inspector {
 	 * @param wdoc		
 	 * @return
 	 */
-	public boolean needful(/*Document wdoc*/) {
+	public boolean needful() {
 		boolean res = true;
 		System.out.print(confmap.get("\t\t122"));
 		return res;
@@ -51,7 +53,7 @@ public final class Inspector {
 	
 	/**
 	 * 检查字符串合理性；
-	 * @return		错误代码:[0, OK; 其他，代表错误类型]
+	 * @return		返回代码:[0, OK; 其他，代表错误类型]
 	 */
 	public int check_prompt() {
 		
@@ -86,7 +88,7 @@ public final class Inspector {
 	
 	
 	
-	
+	// For Test!
 	public static void main(String[] args) {
 		System.out.print(new Inspector().confmap.get("122"));
 	}

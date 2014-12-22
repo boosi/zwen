@@ -25,10 +25,11 @@ public class Editor {
 				"^[0-9]+", 
 				"^[\\(\\[\\{\\<\\>\\}\\]\\)\\|]", 
 				"^[\\+\\-\\*\\/]", 
-				"^[\\.\\=\\:,]"
+				"^[\\.\\=\\:,]",
+				"[\\s]"
 		};
 		String		str		= text;
-		int num = 0;
+		//int num = 0;
 		Matcher match = null;
 		while (!str.equals("")) {
 			match = Pattern.compile(rxs[0]).matcher(str);
@@ -75,6 +76,12 @@ public class Editor {
 				str = str.substring(match.group(0).length());
 				continue;
 			}
+			match = Pattern.compile(rxs[5]).matcher(str);
+			if (match.find()) {
+				rst += "<mo>&#160;</mo>";
+				str = str.substring(match.group(0).length());
+				continue;
+			}
 			rst += "<mi>" + str.substring(0, 1) + "</mi>";
 			str = str.substring(1);
 		}
@@ -90,5 +97,17 @@ public class Editor {
 		
 		return "<math><mn>9876543210</mn></math>";
 	}
+
+	
+	
+	public static void main(String[] args) {
+		System.out.println(">>\t"+getMathStr("9+3"));
+	}
+	
+	
+	
+	
+	
+	
 	
 }
