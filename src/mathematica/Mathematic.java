@@ -87,6 +87,21 @@ public final class Mathematic {
 	}
 	
 	
+	public static String CalculatePlus() {
+		String result = "";
+		try {
+			kerLink = getKernelLink();
+			kerLink.discardAnswer();
+			kerLink.evaluate("Evaluate[Plus[2, 3]]");
+			kerLink.waitForAnswer();
+	        result = kerLink.getString();
+		} catch (Exception ex) {
+			System.out.println("Error \n" + ex.getMessage());
+		}
+		kerLink.close();
+		return result;
+	}
+	
 	public static String CovertToMathML(String expression) {
 		String result = "";
 		try {
@@ -95,10 +110,10 @@ public final class Mathematic {
 			kerLink.evaluate("ExportString[Unevaluated[" + expression + "], \"MathML\", \"Annotition\" -> {}]");
 	        kerLink.waitForAnswer();
 	        result = kerLink.getString();
-	        kerLink.close();
 		} catch (Exception ex) {
 			System.out.println("Error \n" + ex.getMessage());
 		}
+		kerLink.close();
 		return result;
 	}
 	
@@ -136,7 +151,8 @@ public final class Mathematic {
 	@SuppressWarnings("null")
 	private static KernelLink getKernelLink() {
 		KernelLink 	rstLink		= null;
-		String[] argv = new String[] {"-linkmode", "", "-linkname", "D:\\Program Files\\Wolfram Research\\Mathematica\\MathKernel"};	//10.0版本；
+		//String[] argv = new String[] {"-linkmode", "", "-linkname", "D:\\Program Files\\Wolfram Research\\Mathematica\\MathKernel"};	//10.0版本；
+		String[] argv = new String[] {"-linkmode", "", "-linkname", "C:\\Program Files (x86)\\Wolfram Research\\Wolfram CDF Player\\9.0\\MathKernel"};	//10.0版本；
 		try {
 			rstLink = MathLinkFactory.createKernelLink(argv);
 		}
@@ -194,4 +210,12 @@ public final class Mathematic {
 		}
 	}
 	
+	
+	
+	
+	//For Test!
+	public static void main(String[] args) {
+		String str = Mathematic.CalculatePlus();
+		out.println("str = " + str);
+	}
 }

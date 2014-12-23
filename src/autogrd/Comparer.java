@@ -1,7 +1,7 @@
 package autogrd;
 
 import org.w3c.dom.Document;
-
+import static java.lang.System.*;
 
 
 /**
@@ -13,7 +13,7 @@ import org.w3c.dom.Document;
 public class Comparer {
 	
 	Inspector 	ipt;
-	Phrase		phrase;
+	Equation		phrase;
 	Evaluate	evl;
 	Setting 	conf;
 	Document	optAns;
@@ -68,25 +68,25 @@ public class Comparer {
 	 * @return		0，等价；否则，不等价；
 	 */
 	private int Compar() {
-		if (model) {														//为真时 mathML 字符串方式比较；
-			int chknum = isEmpty();
+		if (model) {									//为真时 mathML 字符串方式比较；
+			int chknum = isEmpty();						//检查字串是否合理；
 			if (chknum == 0) {
-				conf	= new Setting(this); 
+				conf	= new Setting(this); 			//环境搭建；
 				ipt 	= new Inspector(this);
-				phrase 	= new Phrase(this);
+				phrase 	= new Equation(this);
 				evl		= new Evaluate(this);
 			
 				try {
-					conf.setConfmap(strConf);								//设定比较条件；
-					if (!ipt.needful())
-						return MsgCode.TRANS_FAIL;
+					conf.setConfmap(strConf);						//设定比较条件；
+					strAns = Transverter.necessaryTrans(strAns);	//规范 MathML 字串；
+					strUsr = Transverter.necessaryTrans(strUsr);	//规范 MathML 字串；
 					
-					chknum = ipt.check_prompt();							//检查字符串合理性；
+					chknum = ipt.violationRules();					//MathML 字符串违例；
 					if (chknum == 0) {
-						chknum = ipt.node_trim();
+						chknum = ipt.violationNode();				//节点违背规则
 						if (chknum == 0) {
 						
-							optAns = new W3cDocument(phrase.transform(strAns));	//创建新对象；
+							optAns = new W3cDocument(phrase.transform(strAns));				//创建新对象；
 							optUsr = new W3cDocument(phrase.transform(strUsr));
 							if (optAns == null)
 									return -6800;
@@ -105,7 +105,7 @@ public class Comparer {
 			return chknum;
 		}
 		else {
-			return strAns.equals(strUsr) ? 0 : -1000;						//直接比较字符串；
+			return strAns.equals(strUsr) ? 0 : -1000;										//直接比较字符串；
 		}
 	}
 	
@@ -121,20 +121,15 @@ public class Comparer {
 		if (strAns == null || strAns.equals("") || strUsr == null || strUsr.equals(""))		//空字串；
 			return -3502;
 		
-		if (!Sharing.isMathString(strAns))									//不是 MathML 字符串，需要经过编辑；
+		if (!Sharing.isMathString(strAns))													//不是 MathML 字符串，需要经过编辑；
 			strAns = editor.Editor.getMathStr(strAns);
 		if (!Sharing.isMathString(strUsr)) 
-			strUsr = editor.Editor.getMathStr(strUsr);						//转换为 MathML字符串；
+			strUsr = editor.Editor.getMathStr(strUsr);										//转换为 MathML字符串；
 		
-		if (Sharing.illicitChars(strUsr))									//为“真”, 输入含有非法字符；
+		if (Sharing.illicitChars(strUsr))													//为“真”, 输入含有非法字符；
 			return -3012;
-		ret = RegularReview.formater(strUsr);								//检查空格、配对、标签等；
-		if (ret != 0)
-			return ret;
 		
-		
-		
-		return ret;
+		return Inspector.formater(strUsr);													//检查空格、配对、标签等；
 	}
 
 	

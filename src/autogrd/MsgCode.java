@@ -9,13 +9,17 @@ package autogrd;
  *17 Dec, 2014
  */
 public final class MsgCode {
+	
+	public static int 	BACK_CODE				= -1000;			//输入的答案是错误的；
+	public static int 	CORRECT_NUM 			= 0;				//输入的答案是正确的；
+	
 
 	public static int	SPEAC_CHAR				= -3010;			//非法空格；
 	public static int	ILLEGAL_CHARS			= -3012;			//非法字符；
 	public static int	REDUNDANCY_ZERO			= -3013;			//多余的“零”（冗余）；
 	
-	public static int 	INVALID_FORMAT			= -3502;			//残缺的格式；
-	public static int 	REDUNDANCY_TAG 			= -3504;			//多余标签；
+	public static int 	INVALID_FORMAT			= -3504;			//残缺的格式；
+	public static int 	REDUNDANCY_TAG 			= -3506;			//多余标签；
 	
 	
 	

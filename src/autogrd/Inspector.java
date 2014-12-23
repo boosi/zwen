@@ -7,29 +7,34 @@ import org.w3c.dom.Document;
 
 
 /**
- * 检查 mathml 字符串‘合理性’；
- * @author Zhengwen
- * 
- *17 Dec, 2014
+ * 检查器，检查 mathml 字符串‘合理性’；
+ * @author Zhengwen 
+ * @date 23 Dec, 2014
+ * @version Grading 3.0 Builder	008
  */
 public final class Inspector {
 	/**与主线程通信（表示启动该类的主线程)*/
 	Comparer communicate = null;
 	
 	
-	private Map<String, String> confmap;
+	private Map<String, String> confmap;	//比较方式的设定；
+	
 	
 	public Document document = null;		//当前‘文档对象’；
 	
 	
 	
-	
+	/**
+	 * 构造器；
+	 */
 	public Inspector() {
 		communicate 		= new Comparer();
 		confmap		= communicate.conf.ConfigMap;
 	}
-	
-	
+	/**
+	 * 构造器；
+	 * @param conponentObject		启动比较程序的主类对象，通常为 Comparer 类；
+	 */
 	public Inspector(Object conponentObject) {
 		communicate 		= (Comparer) conponentObject;
 		confmap		= communicate.conf.ConfigMap;
@@ -38,13 +43,22 @@ public final class Inspector {
 	
 	
 	
+	/**
+	 * 检查文本格式是否合理；
+	 * @param string		来源字串；
+	 * @return				0，合理；其他，不合理；
+	 */
+	public static int formater(String string) {
+		return RegularReview.formater(string);
+	}
+	
 	
 	/**
 	 * 在检查之前必须要做的变换，将不规范的代码规范；
 	 * @param wdoc		
 	 * @return
 	 */
-	public boolean needful() {
+	public boolean necessaryTrans() {
 		boolean res = true;
 		System.out.print(confmap.get("\t\t122"));
 		return res;
@@ -52,10 +66,10 @@ public final class Inspector {
 	
 	
 	/**
-	 * 检查字符串合理性；
+	 * 检查 MathML 字符串违背规则；
 	 * @return		返回代码:[0, OK; 其他，代表错误类型]
 	 */
-	public int check_prompt() {
+	public int violationRules() {
 		
 		
 		return 0;
@@ -66,7 +80,7 @@ public final class Inspector {
 	 * 以节点树形式检查 math 表达式的合理性；
 	 * @return		错误代码:[0, OK; 其他，代表错误类型]
 	 */
-	public int node_trim() {
+	public int violationNode() {
 		
 		return 0;
 	}

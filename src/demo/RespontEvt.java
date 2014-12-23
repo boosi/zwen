@@ -91,7 +91,7 @@ public class RespontEvt implements ActionListener {
 			int k = Comparer.Comparison(
 					evtSource.txEditor.getText(), 
 					evtSource.txMessage.getText(), 
-					true, "121");
+					true, "");
 			evtSource.labOutMsg.setText(k + "");
 		}
 		//清理；
