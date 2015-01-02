@@ -1,4 +1,4 @@
-package autogrd;
+package grading;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -62,11 +62,11 @@ public class W3cnode implements Node {
 		} 
 		catch (ParserConfigurationException pex) {
 			out.println(pex.getMessage());
-			new EventLog().outLog(pex.getMessage());
+			new Log().outLog(pex.getMessage());
 		}
 		catch (Exception ex) {
 			out.println(ex.getMessage());
-			new EventLog().outLog(ex.getMessage());
+			new Log().outLog(ex.getMessage());
 		}	
 	}
 	

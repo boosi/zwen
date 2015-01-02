@@ -1,12 +1,12 @@
-package autogrd;
+package grading;
 
 
 
 /**
  * 错误代码与错误消息的对应，可以详细查询错误种类与具体代码；
- * @author Zhengwen
- * 
- *17 Dec, 2014
+ * @author Zhengwen 
+ * @date 31 Dec, 2014
+ * @version Grading 3.0 Builder	0009
  */
 public final class MsgCode {
 	
@@ -18,7 +18,7 @@ public final class MsgCode {
 	public static int	ILLEGAL_CHARS			= -3012;			//非法字符；
 	public static int	REDUNDANCY_ZERO			= -3013;			//多余的“零”（冗余）；
 	
-	public static int 	INVALID_FORMAT			= -3504;			//残缺的格式；
+	public static int 	INVALID_FORMAT			= -3504;			//残缺的格式(或标签不完整)；
 	public static int 	REDUNDANCY_TAG 			= -3506;			//多余标签；
 	
 	

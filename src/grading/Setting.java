@@ -1,4 +1,4 @@
-package autogrd;
+package grading;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,14 +8,14 @@ import java.util.regex.Pattern;
 
 
 /**
- * 运行中需要设定的若干变量；
- * @author Zhengwen
- * 
- *27 Nov, 2014
+ * 程序设置，运行中需要的参数设定，变量等；
+ * @author Zhengwen 
+ * @date 31 Dec, 2014
+ * @version Grading 3.0 Builder	0009
  */
 public class Setting {
 	/** 与主线程通信（表示启动该类的主线程) */
-	Comparer communicate;
+	Comparer comm;
 	
 	
 	
@@ -26,12 +26,12 @@ public class Setting {
 	
 	
 	public Setting() {
-		communicate = new Comparer();
+		comm = new Comparer();
 		initConfMap();
 	}
 	
 	public Setting(Object conponentObject) {
-		communicate = (Comparer) conponentObject;
+		comm = (Comparer) conponentObject;
 		initConfMap();
 	}
 	
@@ -60,10 +60,10 @@ public class Setting {
 		ConfigMap.put("191", "FALSE");
 		ConfigMap.put("192", "FALSE");
 		ConfigMap.put("171", "");
-		ConfigMap.put("150", "12");
-		ConfigMap.put("151", "12");
-		ConfigMap.put("152", "14");
-		ConfigMap.put("153", "14");
+		ConfigMap.put("150", "8");
+		ConfigMap.put("151", "8");
+		ConfigMap.put("152", "12");
+		ConfigMap.put("153", "12");
 	}
 	
 	
@@ -89,23 +89,20 @@ public class Setting {
 		ConfigMap.put("191", instr.indexOf("191") >= 0 ? "TRUE" : "FALSE");
 		ConfigMap.put("192", instr.indexOf("192") >= 0 ? "TRUE" : "FALSE");
 		
-		if (instr.indexOf("171") >= 0) {
-			String string = instr.substring(
-					instr.indexOf("171#") + 4, instr.indexOf(",", instr.indexOf("171#") + 4));	//截取子字符串
-		}
-		ConfigMap.put("171", instr.indexOf("171") >= 0 ? "TRUE" : "FALSE");
-		regexString = "15(\\d)#(\\d+)";
+		regexString = "(?<=171#)(\\w+)(?=,|)";
+		matcher = Pattern.compile(regexString).matcher(instr);
+		if (matcher.find()) 
+			ConfigMap.put("171", matcher.group(0));	//截取子字符串
+		else 
+			ConfigMap.put("171", "");
+		
+		regexString = "(?<=15([0-3])#)(\\d+)(?=,|)";
 		matcher = Pattern.compile(regexString).matcher(instr);
 		while (matcher.find()) {
-			if (matcher.group(1).equals("0")) 
-				ConfigMap.put("150", matcher.group(2));
-			else if (matcher.group(1).equals("1")) 
-				ConfigMap.put("151", matcher.group(2));
-			else if (matcher.group(1).equals("2")) 
-				ConfigMap.put("152", matcher.group(2));
-			else {
-				ConfigMap.put("153", matcher.group(2));
-			}
+			ConfigMap.put("150", matcher.group(1).equals("0") ? matcher.group(2) : "8");
+			ConfigMap.put("151", matcher.group(1).equals("1") ? matcher.group(2) : "8");
+			ConfigMap.put("152", matcher.group(1).equals("2") ? matcher.group(2) : "");
+			ConfigMap.put("153", matcher.group(1).equals("3") ? matcher.group(2) : "");
 		}
 	}
 	

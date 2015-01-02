@@ -1,4 +1,4 @@
-package autogrd;
+package grading;
 
 
 
@@ -7,24 +7,24 @@ package autogrd;
 
 
 /**
- * 各种表达式，为不与 mathematic 包的 Expression 或 Expr 类名称重复；<br/>专门处理表达式的各种运算；
+ * 等式，方程式，表达式等；为不与 mathematic 包的 Expression 或 Expr 类名称重复；<br/>专门处理表达式的各种运算；
  * @author Zhengwen 
  * @date 23 Dec, 2014
- * @version Grading 3.0 Builder	008
+ * @version Grading 3.0 Builder	0009
  */
 public class Equation {
 	/** 与主线程通信（表示启动该类的主线程)； */
-	Comparer communicate = null;
+	Comparer comm = null;
 	
 	
 	
 	
 	public Equation() {
-		communicate = new Comparer();
+		comm = new Comparer();
 	}
 	
 	public Equation(Object conponentObject) {
-		communicate = (Comparer) conponentObject;
+		comm = (Comparer) conponentObject;
 	}
 	
 	

@@ -3,6 +3,14 @@ package editor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+/**
+ * 编辑器；<br/>
+ * 将通常的数学字串转换为 MathNL 字符串；
+ * @author Zhengwen 
+ * @date 2 Jan, 2015
+ * @version Grading 3.0 Builder		0009
+ */
 public class Editor {
 
 	/** 构造器 **/

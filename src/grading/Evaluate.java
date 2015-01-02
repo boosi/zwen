@@ -1,6 +1,13 @@
-package autogrd;
+package grading;
+
+import javax.swing.JFrame;
+
+import java.lang.reflect.*;
+import java.util.Arrays;
 
 import org.w3c.dom.Document;
+
+import static grading.Log.*;
 
 
 
@@ -8,13 +15,13 @@ import org.w3c.dom.Document;
 
 /**
  * 评估两个对象是否等价；
- * @author Zhengwen
- * 
- *17 Dec, 2014
+ * @author Zhengwen 
+ * @date 31 Dec, 2014
+ * @version Grading 3.0 Builder	0009
  */
 public class Evaluate {
 	/**与主线程通信（表示启动该类的主线程)*/
-	Comparer communicate = null;
+	Comparer comm = null;
 	
 	
 	
@@ -23,8 +30,15 @@ public class Evaluate {
 	 * 构造器；
 	 */
 	public Evaluate(Comparer comparer) {
-		communicate = comparer;
+		comm = comparer;
+		try {
+			print("Super.class:\t" + this.getClass().getName());
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
 	}
+	
 	
 	/**
 	 * 评估对象等值性；

@@ -1,5 +1,7 @@
 package demo;
 
+import grading.Comparer;
+
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,9 +14,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import mathematica.Calculate;
-import mathematica.Mathematic;
-import autogrd.Comparer;
+import maths.Calculate;
+import maths.Mathematic;
 
 
 public class RespontEvt implements ActionListener {

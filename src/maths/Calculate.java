@@ -1,4 +1,4 @@
-package mathematica;
+package maths;
 
 import static java.lang.System.out;
 

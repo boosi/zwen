@@ -1,4 +1,4 @@
-package autogrd;
+package grading;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,10 +10,10 @@ import org.w3c.dom.Document;
 
 
 /**
- * 共享类，提供程序运行时的各种通用方法；
+ * 共享类，集中了程序运行时的各种通用方法，共享方法等；
  * @author Zhengwen 
  * @date 23 Dec, 2014
- * @version Grading 3.0 Builder	008
+ * @version Grading 3.0 Builder	0009
  */
 public class Sharing {
 
@@ -28,13 +28,13 @@ public class Sharing {
 	 * @return		true，包含；false，不包含；
 	 */
 	public static boolean illicitChars(String instr) {
-		String 	result = "", rex = "(?i)(?<=>)[^<>]+?(?=</)", 
-				rex2 = "[^\\w\\+\\-\\(\\)\\=\\<\\>,\\|\\{\\}\\:\\.(\\u03B1-\\u03D6)(&#(?:215|247|945|946|952|960|8745|8746|8804|8805|9651);)]";
-		Matcher mat = Pattern.compile(rex).matcher(instr);
+		String 	result = ""; 
+		Matcher mat = Pattern.compile(RexExpr.ANY_TAG).matcher(instr);
+		
 		while (mat.find())
 			result += mat.group(0);		//去掉标签的全部文本；
 		
-		return Pattern.compile(rex2).matcher(result).find();		//在其中查询是否含有不合理字符；
+		return Pattern.compile(RexExpr.CORRECT_CHAR).matcher(result).find();		//在其中查询是否含有不合理字符；; 
 	}
 	
 	
@@ -54,9 +54,7 @@ public class Sharing {
 	 * @return			true，MathML 字符串；否则不是 MathML 字符串；
 	 */
 	public static boolean isMathString(String instr) {
-		String rex = "<math[^>]*>.+</math>";
-		Matcher mat = Pattern.compile(rex).matcher(instr);
-		return mat.find();
+		return Pattern.compile(RexExpr.MATH_TAG).matcher(instr).find();
 	}
 	
 	

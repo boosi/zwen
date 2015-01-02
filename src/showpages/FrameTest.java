@@ -1,4 +1,4 @@
-package applets;
+package showpages;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;

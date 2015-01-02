@@ -1,4 +1,4 @@
-package autogrd;
+package grading;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,7 +9,16 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
-public class EventLog extends Exception {
+
+
+
+/**
+ * 日志，记录程序的活动日志及异常；
+ * @author Zhengwen 
+ * @date 31 Dec, 2014
+ * @version Grading 3.0 Builder	0009
+ */
+public class Log extends Exception {
 	private static final long serialVersionUID = 5012888463041971623L;
 
 	private String pathname = System.getenv("APPDATA") + "/autograd.dat";
@@ -18,7 +27,7 @@ public class EventLog extends Exception {
 	
 	
 	
-	public EventLog() {
+	public Log() {
 		file = new File(pathname);
 	}
 
@@ -52,6 +61,8 @@ public class EventLog extends Exception {
 	public void printLog(Exception exception) {
 		System.out.println(exception.getMessage());
 	}
+	
+	
 	
 	/**
 	 * 得到日期的字符串，格式（“YYYY/MM/dd HH:mm:ss”）；
@@ -95,6 +106,15 @@ public class EventLog extends Exception {
 	}
 	
 	
+	
+	
+	public static void print(Object obj) {
+		System.out.println(obj);
+	}
+	
+	
+	
+	//{rem 测试
 	/*
 	public static void main(String[] args) {
 		EventLog pe = new EventLog();
@@ -108,5 +128,6 @@ public class EventLog extends Exception {
 			//System.out.println("error:" + ex.getMessage());
 		}
 	}
-	 */
+	*/
+	//}end
 }

@@ -62,7 +62,7 @@ public class Userface extends JFrame {
 	 * 初始化控件；
 	 */
 	void initialComponents() {
-		setTitle("Auto-Griding 2.0");
+		setTitle("Auto-Griding 3.0");
 		setSize(840, 560);
 		setLocationRelativeTo(null);
 		contentPanel.setLayout(layout);
