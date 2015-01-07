@@ -46,15 +46,15 @@ public class Transverter {
 			while (mat.find()) 
 				instr = mat.replaceFirst("");
 		
-		mat = Pattern.compile(RexExpr.IDENTIFIER).matcher(instr);
+		mat = Pattern.compile(RexExpr.TAG_MI).matcher(instr);
 			while (mat.find()) 
 				instr = mat.replaceFirst("<mi>");
 		
-		mat = Pattern.compile(RexExpr.NUMBER).matcher(instr);
+		mat = Pattern.compile(RexExpr.TAG_MN).matcher(instr);
 			while (mat.find()) 
 				instr = mat.replaceFirst("<mn>");
 		
-		mat = Pattern.compile(RexExpr.OPERATE).matcher(instr);
+		mat = Pattern.compile(RexExpr.TAG_MO).matcher(instr);
 			while (mat.find()) 
 				instr = mat.replaceFirst("<mo>");
 			

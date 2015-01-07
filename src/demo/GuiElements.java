@@ -40,4 +40,39 @@ public final class GuiElements {
 	JButton 	btnExit		= new JButton("Exit");		//退出按钮；
 	
 	JLabel		labOutMsg	= new JLabel("  Display the information for result.");
+
+
+	
+	public static String[] boxName = new String[] {
+		  "(111) Bearing / Degree '0' 2021"
+		, "(121) Answer is not in the simplest form 2023"
+		, "(122) Mixed Number 2025"
+		, "(131) Standard Form 2027"
+		, "(132) Index Notation 2029"
+		
+		, "(133) Surds 2031"
+		, "(134) Set Notation 2033"
+		, "(141) Trigonometric Function 2035"
+		, "(142) Logarithmic Function 2037"
+		, "(150#4) Decimal Places (strictly) 2039"
+		
+		, "(151#2) Decimal Places 2041"
+		, "(152#3) Significant Figures 2043"
+		, "(153#8) Significant Figures (strictly) 2045"
+		, "(161) Rounding 2047"
+		, "(162) Rund Up 2049"
+		
+		, "(163) Rund Down 2051"
+		, "(171) Accept specified answer 2053"
+		, "(181) Is Expansion 2055"
+		, "(182) Is Factorisation 2057"
+		, "(190) Surds Radical Form 2059"
+		, "(191) Surds Index Form 2061"
+		, "(192) Surds is the Index of Lager than Zero 2063"
+	};
+	
+
+
+
+
 }

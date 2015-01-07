@@ -27,45 +27,14 @@ public class Setting {
 	
 	public Setting() {
 		comm = new Comparer();
-		initConfMap();
 	}
 	
 	public Setting(Object conponentObject) {
 		comm = (Comparer) conponentObject;
-		initConfMap();
 	}
 	
 
 
-	/**
-	 * 
-	 */
-	private void initConfMap() {
-		ConfigMap	= new HashMap<String, String>();
-		ConfigMap.put("111", "FALSE");
-		ConfigMap.put("121", "FALSE");
-		ConfigMap.put("122", "FALSE");
-		ConfigMap.put("131", "FALSE");
-		ConfigMap.put("132", "FALSE");
-		ConfigMap.put("133", "FALSE");
-		ConfigMap.put("134", "FALSE");
-		ConfigMap.put("141", "FALSE");
-		ConfigMap.put("142", "FALSE");
-		ConfigMap.put("161", "FALSE");
-		ConfigMap.put("162", "FALSE");
-		ConfigMap.put("163", "FALSE");
-		ConfigMap.put("181", "FALSE");
-		ConfigMap.put("182", "FALSE");
-		ConfigMap.put("190", "FALSE");
-		ConfigMap.put("191", "FALSE");
-		ConfigMap.put("192", "FALSE");
-		ConfigMap.put("171", "");
-		ConfigMap.put("150", "8");
-		ConfigMap.put("151", "8");
-		ConfigMap.put("152", "12");
-		ConfigMap.put("153", "12");
-	}
-	
 	
 	
 	public void setConfmap(String instr) {

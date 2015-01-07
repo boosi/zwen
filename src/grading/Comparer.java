@@ -1,5 +1,8 @@
 package grading;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.w3c.dom.Document;
 
 import test.Examine;
@@ -27,10 +30,6 @@ public class Comparer {
 	public String strConf 	= "";		//设定
 	
 	
-	//public OperatObject 	oo1;		//操作对象；
-	//public OperatObject 	oo2;		//输入的操作对象；
-	
-	
 	
 	//{rem 构造器；
 	/** 构造; */
@@ -53,7 +52,8 @@ public class Comparer {
 	
 	
 	/**
-	 * 主类；对 MathML 字符串进行比较；
+	 * 主类；对 MathML 字符串进行比较；调用比较器；<br/>
+	 * 启动比较程序的主类；
 	 * @param strAnswer			正确答案字符串；
 	 * @param strInput			用户输入字符串；
 	 * @param model				比较的模式；
@@ -72,56 +72,51 @@ public class Comparer {
 	 * @return		0，等价；否则，不等价；
 	 */
 	private int Compar() {
-		if (model) {									//为真时 mathML 字符串方式比较；
-			int chknum = isEmpty();						//检查字串是否为空；
-			if (chknum == 0) {
-				conf	= new Setting(this); 			//环境搭建；
-				insp 	= new Inspector(this);
-				equt 	= new Equation(this);
-				eval	= new Evaluate(this);
+		int chknum = -1000;
+		chknum = isEmpty();								//检查字串是否为空；code:3502 or 6100
+		if (chknum != 0)
+			return chknum; 
+		if (model) {									//model 为真, mathML 字符串；
+			chknum = ReviewInput();						//检查输入合理与完整性；	code:3502,6100.3012,3010;
+			if (chknum != 0) 
+				return chknum;							//不合格则退出程序；
 			
-				print("1. Debug.Xmlstr:\t" + usrStr);
+			conf	= new Setting(this); 				//环境搭建；
+			insp 	= new Inspector(this);
+			equt 	= new Equation(this);
+			eval	= new Evaluate(this);
+			print("1.usrStr:\t" + usrStr);
 				
-				chknum = insp.checkStandar(usrStr);		//检查字串的标准化与唯一化；
-				if (chknum != 0)
-					return chknum;
+			try {
+				ansStr = Transverter.necessaryTrans(ansStr);	//规范 MathML 字串,格式化为唯一表达形式；
+				usrStr = Transverter.necessaryTrans(usrStr);
+				print("2.usrStr:\t" + usrStr);					//分阶段检查、输出、调试 bug；
 				
-				try {
-					conf.setConfmap(strConf);						//设定比较条件；
-					ansStr = Transverter.necessaryTrans(ansStr);	//规范 MathML 字串；
-					usrStr = Transverter.necessaryTrans(usrStr);	//规范 MathML 字串；
-					
-					
-					print("2. Debug.Xmlstr:\t" + usrStr);			//分阶段检查、输出、调试 bug；
-					
-					
-					
-					
-					
-					
-					
-					
-					chknum = insp.violationRules();					//检查MathML 字符串违例；
+				conf.setConfmap(strConf);						//设置比较条件；
+				
+				//{rem 启动比较；
+				chknum = insp.violationRules(usrStr);						//字符串违例；
+				if (chknum == 0) {
+					chknum = insp.violationNode(usrStr);					//节点违规；
 					if (chknum == 0) {
-						chknum = insp.violationNode();				//检查节点违背规则
-						if (chknum == 0) {
-							ansStr = equt.transform(ansStr);		//最终转换为对象
-							usrStr = equt.transform(usrStr);		//最终转换为对象
-							ansDom = new OperatObject(ansStr).getDocument();				//重新创建对象；
-							ansDom = new OperatObject(ansStr).getDocument();				//重新创建对象；
-							/*if (ansDom == null)
-									return -6800;
-							if (usrDom == null)
-									return -6900;*/
-							chknum = eval.EvalObject(ansDom, usrDom);
-						}
+						ansStr = equt.transform(ansStr);					//最终变换及赋值；
+						usrStr = equt.transform(usrStr);					//最终变换及赋值；
+						ansDom = new OperatObject(ansStr).getDocument();	//重建对象；
+						ansDom = new OperatObject(ansStr).getDocument();	//重建对象；
+						if (ansDom == null)
+								return -6800;								//如果为空，中止程序；
+						if (usrDom == null)
+								return -6900;								//如果为空，中止程序；
+						chknum = eval.EvalObject(ansDom, usrDom);			//评估表达式；
 					}
 				}
-				catch (Exception ex) {
-					new Log().outLog(ex.getMessage());
-					chknum = -1010;
-				}
+				//}end
 			}
+			catch (Exception ex) {
+				new Log().outLog(ex.getMessage());		//错误写入日志；
+				chknum = -1000;
+			}
+			
 			return chknum;
 		}
 		else {
@@ -132,28 +127,61 @@ public class Comparer {
 	
 	
 	/**
-	 * 输入字符串包含空格或非法字符；
-	 * @return		0，不包含；其它，非法或不合格字串；
+	 * 输入是否为空或者格式有空缺；
 	 */
 	private int isEmpty() {
 		if (ansStr == null || ansStr.equals("") || usrStr == null || usrStr.equals(""))		//空字串；
+			return -6100;
+		
+		return isNull();																	//检查格式有空否(null)； code:3502;
+	}
+	
+	
+	private int isNull() {
+		int count;
+		count = 0;
+		Matcher mat = Pattern.compile("(\\)|\\()").matcher(usrStr);
+		while (mat.find()) 
+			count++;
+		if (count % 2 != 0) 				//括号不配对；
+			return -3502;
+		count = 0;							//还原；
+		mat = Pattern.compile("(\\{|\\})").matcher(usrStr);
+		while (mat.find()) 
+			count++;
+		if (count % 2 != 0)
+			return -3502;
+		count = 0;
+		mat = Pattern.compile("\\|").matcher(usrStr);
+		while (mat.find()) 
+			count++;
+		if (count % 2 != 0)
 			return -3502;
 		
-		if (!Sharing.isMathString(ansStr))													//不是 MathML 字符串，需要经过编辑；
-			ansStr = editor.Editor.getMathStr(ansStr);
-		if (!Sharing.isMathString(usrStr)) 
-			usrStr = editor.Editor.getMathStr(usrStr);										//转换为 MathML字符串；
-		
-		if (Sharing.illicitChars(usrStr))													//为“真”, 输入含有非法字符；
-			return -3012;
-		
-		return Inspector.hasSpace(usrStr);													//检查空格、配对、标签等；
+		return 0;
 	}
 
-	
-	
-	
-	
+	/**
+	 * 检查输入字符串是否含有非法字符或空格等；
+	 * <br/>检查字串的完整性；
+	 * @return
+	 */
+	private int ReviewInput() {
+		int chknum = 0;
+		if (!Sharing.isMathString(ansStr)){												//不是 MathML 字符串，需要经过编辑；
+			if (Sharing.illicitChars(ansStr))											//为“真”, 输入含有非法字符；
+				return -3012;
+			ansStr = editor.Editor.getMathStr(ansStr);
+		}
+		if (!Sharing.isMathString(usrStr)) {
+			if (Sharing.illicitChars(usrStr))											//为“真”, 输入含有非法字符；
+				return -3012;
+			usrStr = editor.Editor.getMathStr(usrStr);									//转换为 MathML字符串；
+		}
+		
+		chknum = Inspector.incompleteNode(usrStr);											//检查空格、配对、标签等；
+		return 	chknum;
+	}
 	
 	
 	
@@ -170,18 +198,6 @@ public class Comparer {
 	}
 	
 	//}end
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 }
@@ -201,11 +217,11 @@ class Remark {
 	
 	/* 操作思路：
 	 * 	1. 运行规范化程序，将不规范的 mathml 字符串代码规范为标准的字符串；
-	 * 	2. 检查字符串是否符合比较的‘条件设定’；（不符合的要 Prompt）
-	 * 	3. 将 mathml 字符串对象化为‘文档对象’；（对象化）
-	 * 	4. 检查‘文档对象’是否合理及符合‘比较条件’；（以文档对象格式检查是否符合数学规范）
-	 * 	5. 进行赋值；（最终给未知变量赋值）
-	 * 	6. 比较并返回结果；（返回比较结果）
+	 * 	2. 检查字符串是否合理及完整性；
+	 *  3. 检查文档对象的节点是否违规；
+	 * 	4. 转换字符串为标准的、唯一的，并且重新创建新文档对象；
+	 * 	5. 进行赋值；（最终给未知变量赋值）；
+	 * 	6. 比较并返回结果；（返回比较结果）；
 	 * 
 	 */
 	
@@ -227,7 +243,7 @@ class Remark {
 	
 	
 	/*
-	 * 检查器分为两部分：
+	 * 检查器分为几部分：
 	 * 	1. 数字检查器；
 	 * 	2. 代数检查器；
 	 * 	3. 表达式还有多项式检查器；

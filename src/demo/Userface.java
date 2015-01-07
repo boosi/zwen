@@ -42,6 +42,16 @@ public class Userface extends JFrame {
 	private GridBagConstraints	gridbag;
 	private RespontEvt			Evt;
 	
+	
+	
+	
+	public String strConfig = "";
+	
+	
+	
+	
+	
+	
 	/**
 	 * 构造器；
 	 */
@@ -64,7 +74,8 @@ public class Userface extends JFrame {
 	void initialComponents() {
 		setTitle("Auto-Griding 3.0");
 		setSize(840, 560);
-		setLocationRelativeTo(null);
+		setLocation(200, 200);
+		//setLocationRelativeTo(null);
 		contentPanel.setLayout(layout);
 		layout.rowWeights 		= new double[] {0.4, 0.0, 0.4, 0.0, 0.0};
 		layout.columnWeights	= new double[] {0.25, 0.75};
@@ -116,7 +127,7 @@ public class Userface extends JFrame {
 		ufs.west1Pane.add(ufs.btnImport);
 		ufs.west1Pane.add(ufs.btnCalcul);
 		// 功能按钮二；
-		ufs.west2Pane.add(ufs.btnCheck);	ufs.btnCheck.setEnabled(false);
+		ufs.west2Pane.add(ufs.btnCheck);	//ufs.btnCheck.setEnabled(false);
 		ufs.west2Pane.add(ufs.btnCompara);	//ufs.btnCompara.setEnabled(false);
 		ufs.west2Pane.add(ufs.btnExport);	ufs.btnExport.setEnabled(false);
 		//系统按钮
@@ -149,7 +160,7 @@ public class Userface extends JFrame {
 		ufs.btnCompara.	addActionListener(Evt);
 		ufs.btnExport.	addActionListener(Evt);
 		//系统按钮
-		ufs.btnCheck.	addActionListener(Evt);
+		//ufs.btnCheck.	addActionListener(Evt);
 		ufs.btnConfig.	addActionListener(Evt);
 		ufs.btnClear.	addActionListener(Evt);
 		ufs.btnExit.	addActionListener(Evt);

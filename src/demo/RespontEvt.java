@@ -1,7 +1,12 @@
 package demo;
 
 import grading.Comparer;
+import grading.Inspector;
+import grading.Sharing;
 
+import java.awt.Dialog;
+import java.awt.Dialog.ModalityType;
+import java.awt.Dimension;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,12 +31,12 @@ public class RespontEvt implements ActionListener {
 	private JFrame				showFrame;
 	
 	public JFrame				mainFrm;
-	public String 				strConfig;
-	
+	public SetPanel 			sPanel;
+	public String 				strconf 		= "";
 	
 	public RespontEvt(Object object) {
 		evtSource = (GuiElements) object;
-		configPane = new ConfigPanel(null);
+		sPanel		= new SetPanel(this, new Dimension(520, 780));
 	}
 	
 	
@@ -76,24 +81,42 @@ public class RespontEvt implements ActionListener {
 		if (e.getSource().equals(evtSource.btnExport)) {
 			//暂时不设定此功能；
 		}
-		//显示设定对话框
+		//弹出设定框
 		if (e.getSource().equals(evtSource.btnConfig)) {
-			showFrame = new ShowFrame(configPane, "Configurable Compare Schema", 320, 480);
-			showFrame.setVisible(true);
-			showFrame.addWindowListener(new WindowAdapter() {
-				public void windowClosing(WindowEvent e) {
-					System.out.println("Button:");
-					System.out.println("Button:" + showFrame.getOwner());
-				}
-			});
+			sPanel.setVisible(true);
+			strconf = sPanel.strConf;
+			System.out.println("strconf = " + strconf);		
+			
+			
 		}
 		//比较
 		if (e.getSource().equals(evtSource.btnCompara)) {
 			int k = Comparer.Comparison(
 					evtSource.txEditor.getText(), 
 					evtSource.txMessage.getText(), 
-					true, "");
+					true, strconf);
 			evtSource.labOutMsg.setText(k + "");
+		}
+		//检查
+		if (e.getSource().equals(evtSource.btnCheck)) {
+			int msgcode = -1000;
+			String str = evtSource.txMessage.getText();
+			if (str.equals(null) || str.equals(""))			//It is Empty, return; 
+				evtSource.labOutMsg.setText(6100 + "");
+			else {
+				if (!Sharing.isMathString(str)){			//Is MathML character?
+					if (Sharing.illicitChars(str)) {				//Contain illicit character?
+						evtSource.labOutMsg.setText(3012 + "");		//Message out.
+						return ;
+					}
+					str = editor.Editor.getMathStr(str);			//Convert to MathML character.
+				}
+				
+				msgcode = Inspector.incompleteNode(str);					//Contain space character?
+				Inspector isp = new Inspector(str);
+				
+				evtSource.labOutMsg.setText(msgcode + "");
+			}
 		}
 		//清理；
 		if (e.getSource().equals(evtSource.btnClear)) {
@@ -132,37 +155,4 @@ public class RespontEvt implements ActionListener {
 	}
 
 
-	//{bgn	实现 WindowListener 接口方法
-	public void windowActivated(WindowEvent e) {
-		
-	}
-
-	public void windowClosed(WindowEvent e) {
-		
-	}
-
-	public void windowClosing(WindowEvent e) {
-		
-	}
-
-//	public void windowDeactivated(WindowEvent e) {
-//		if (e.getSource().equals(showFrame)) {
-//			strConfig = ((ShowFrame) showFrame).strConfig;
-//			System.out.println(e.getSource());
-//		}
-//	}
-
-	public void windowDeiconified(WindowEvent e) {
-		
-	}
-
-	public void windowIconified(WindowEvent e) {
-		
-	}
-
-	public void windowOpened(WindowEvent e) {
-		
-	}
-	//}end
-	
 }

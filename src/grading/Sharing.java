@@ -54,7 +54,7 @@ public class Sharing {
 	 * @return			true，MathML 字符串；否则不是 MathML 字符串；
 	 */
 	public static boolean isMathString(String instr) {
-		return Pattern.compile(RexExpr.MATH_TAG).matcher(instr).find();
+		return Pattern.compile(RexExpr.TAG_MATH).matcher(instr).find();
 	}
 	
 	
