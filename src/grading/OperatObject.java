@@ -88,14 +88,14 @@ public  class OperatObject implements Document, Node {
 		catch (ParserConfigurationException pex) {
 			document = null;
 			out.println(pex.getMessage());
-			new Log().outLog(pex.getMessage());
+			new Eventlog().write(pex.getMessage());
 			success = false;		//创建对象失败；
 			return null;
 		}
 		catch (Exception ex) {
 			document = null;
 			out.println(ex.getMessage());
-			new Log().outLog(ex.getMessage());
+			new Eventlog().write(ex.getMessage());
 			success = false;		//创建对象失败；
 			return null;
 		}

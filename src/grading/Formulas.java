@@ -1,5 +1,7 @@
 package grading;
 
+import org.w3c.dom.Node;
+
 
 
 
@@ -12,21 +14,21 @@ package grading;
  * @date 23 Dec, 2014
  * @version Grading 3.0 Builder	0009
  */
-public class Equation {
+public class Formulas {
 	/** 与主线程通信（表示启动该类的主线程)； */
 	Comparer comm = null;
 	
 	
 	
-	
-	public Equation() {
+	//{rem 构造器
+	public Formulas() {
 		comm = new Comparer();
 	}
 	
-	public Equation(Object conponentObject) {
+	public Formulas(Object conponentObject) {
 		comm = (Comparer) conponentObject;
 	}
-	
+	//}end
 	
 	
 	public String transform(String instr) {
@@ -45,9 +47,45 @@ public class Equation {
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//============================
+	public static String getExprValue(Node node) {
+		String name = node.getNodeName();
+		String retStr = "";
+		switch (name) {
+		case "msqrt":
+			retStr = Math.sqrt(Double.parseDouble(node.getTextContent())) + "";
+			break;
+
+		default:
+			break;
+		}
+		
+		return retStr;
+	}
+	
+	
+	
+	
+	
 	// For Test!
 	public static void main(String[] args) {
 
 	}
 
+	
+	
+	
+	
+	
+	
+	
 }

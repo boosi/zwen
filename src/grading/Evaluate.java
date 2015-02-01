@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import org.w3c.dom.Document;
 
-import static grading.Log.*;
+import static grading.Eventlog.*;
 
 
 
@@ -26,9 +26,7 @@ public class Evaluate {
 	
 	
 	
-	/**
-	 * 构造器；
-	 */
+	/** 构造器； **/
 	public Evaluate(Comparer comparer) {
 		comm = comparer;
 		try {
@@ -44,7 +42,7 @@ public class Evaluate {
 	 * 评估对象等值性；
 	 * @return
 	 */
-	public int EvalObject(Document opt1, Document opt2) {
+	public int EvalDocument(Document opt1, Document opt2) {
 		String st1 = opt1.getDocumentElement().getTextContent();
 		if (st1.indexOf("") >= 0) 
 			return evalEquation(opt1, opt2);
@@ -73,11 +71,21 @@ public class Evaluate {
 	}
 	
 	
+	/**
+	 * 评估两个对象的值是否等价，用于 Xml.MathML 字符串或 W3c.Document 对象之间；
+	 * @return
+	 */
+	public double EvalObject() {
+		
+		return 0d;
+	}
 	
 	
-	
-	
-	
+	/** 化简 MathML 字串；  */
+	public String IntoSimple() {
+		
+		return null;
+	}
 	
 	
 	

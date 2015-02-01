@@ -19,7 +19,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import maths.Calculate;
+import maths.Calculator;
 import maths.Mathematic;
 
 
@@ -52,17 +52,17 @@ public class RespontEvt implements ActionListener {
 				return;
 			}
 			String expression = evtSource.txEditor.getText();
-			LoadPicture(Calculate.getImageBytes(expression));
+			LoadPicture(Calculator.getImageBytes(expression));
 		}
 		//转换 	to Math ML字符串 
 		if (e.getSource().equals(evtSource.btnCovert1)) {
 			String strExpr = evtSource.txEditor.getText();
-			evtSource.txMessage.setText(Calculate.Transform(strExpr, 2));
+			evtSource.txMessage.setText(Calculator.Transform(strExpr, 2));
 		}
 		//转换 	to Arith字符串并计算结果
 		if (e.getSource().equals(evtSource.btnCovert2)) {
 			String strExpr = evtSource.txEditor.getText();
-			evtSource.txMessage.setText(Calculate.Transform(strExpr, -2));
+			evtSource.txMessage.setText(Calculator.Transform(strExpr, -2));
 		}
 		//导入
 		if (e.getSource().equals(evtSource.btnImport)) {
@@ -75,7 +75,7 @@ public class RespontEvt implements ActionListener {
 		//计算
 		if (e.getSource().equals(evtSource.btnCalcul)) {
 			String strExpr = evtSource.txEditor.getText();
-			evtSource.txMessage.setText(Calculate.Calculation(strExpr).toString());
+			evtSource.txMessage.setText(Calculator.Calculation(strExpr).toString());
 		}
 		//导出
 		if (e.getSource().equals(evtSource.btnExport)) {

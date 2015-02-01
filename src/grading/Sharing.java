@@ -29,7 +29,7 @@ public class Sharing {
 	 */
 	public static boolean illicitChars(String instr) {
 		String 	result = ""; 
-		Matcher mat = Pattern.compile(RexExpr.ANY_TAG).matcher(instr);
+		Matcher mat = Pattern.compile(RexExpr.ANY_CONTENT).matcher(instr);
 		
 		while (mat.find())
 			result += mat.group(0);		//去掉标签的全部文本；

@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import org.w3c.dom.Document;
 
 import test.Examine;
-import static grading.Log.*;
+import static grading.Eventlog.*;
 
 
 /**
@@ -18,7 +18,7 @@ import static grading.Log.*;
 public class Comparer {
 	
 	Inspector 	insp;
-	Equation	equt;
+	Formulas	equt;
 	Evaluate	eval;
 	Setting 	conf;
 	Document	ansDom;
@@ -83,11 +83,12 @@ public class Comparer {
 			
 			conf	= new Setting(this); 				//环境搭建；
 			insp 	= new Inspector(this);
-			equt 	= new Equation(this);
+			equt 	= new Formulas(this);
 			eval	= new Evaluate(this);
 			print("1.usrStr:\t" + usrStr);
 				
 			try {
+				////下述操作过程需要保证字符串 ansStr与usrStr的唯一性，并且必须确保改正的是字串本身，而不是替身。
 				ansStr = Transverter.necessaryTrans(ansStr);	//规范 MathML 字串,格式化为唯一表达形式；
 				usrStr = Transverter.necessaryTrans(usrStr);
 				print("2.usrStr:\t" + usrStr);					//分阶段检查、输出、调试 bug；
@@ -107,13 +108,13 @@ public class Comparer {
 								return -6800;								//如果为空，中止程序；
 						if (usrDom == null)
 								return -6900;								//如果为空，中止程序；
-						chknum = eval.EvalObject(ansDom, usrDom);			//评估表达式；
+						chknum = eval.EvalDocument(ansDom, usrDom);			//评估表达式；
 					}
 				}
 				//}end
 			}
 			catch (Exception ex) {
-				new Log().outLog(ex.getMessage());		//错误写入日志；
+				new Eventlog().write(ex.getMessage());		//错误写入日志；
 				chknum = -1000;
 			}
 			
@@ -215,7 +216,16 @@ public class Comparer {
  */
 class Remark {
 	
+	
 	/* 操作思路：
+	 * 调用静态方法 Comparison。
+	 * 在静态方法中启动新的线程，创建新的对象。
+	 * 使用创建的对象启动比较程序。
+	 */
+	
+	
+	
+	/* 操作步骤：
 	 * 	1. 运行规范化程序，将不规范的 mathml 字符串代码规范为标准的字符串；
 	 * 	2. 检查字符串是否合理及完整性；
 	 *  3. 检查文档对象的节点是否违规；

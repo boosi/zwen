@@ -64,10 +64,10 @@ public final class Inspector {
 			while (mat.find()) 
 				return -3015;
 		
-		mat = Pattern.compile(RexExpr.INCOMPLETE_1).matcher(string);	//Null 节点；
+		mat = Pattern.compile(RexExpr.CONTENT_NULL).matcher(string);	//Null 节点；
 			while (mat.find()) 
 				return -6100;
-		mat = Pattern.compile(RexExpr.INCOMPLETE_2).matcher(string);	//空节点；
+		mat = Pattern.compile(RexExpr.CONTENT_EMPTY).matcher(string);	//空节点；
 			while (mat.find()) 
 				return -6100;
 		
@@ -79,7 +79,7 @@ public final class Inspector {
 				if (!bool)
 					return -3502;
 			}
-		mat = Pattern.compile(RexExpr.ROW_SQRT).matcher(string);								//开平方以及行处理等；
+		mat = Pattern.compile(RexExpr.TAG_ROW_SQRT).matcher(string);								//开平方以及行处理等；
 			while (mat.find()) {
 				String tmp = mat.group(2);
 				boolean bool = tmp == null || tmp.equals("");									
@@ -100,10 +100,10 @@ public final class Inspector {
 				if (bool)
 					return -3502;
 			}	
-		mat = Pattern.compile(RexExpr.INCOMPLETE_2).matcher(string);							//彻底为空；
+		mat = Pattern.compile(RexExpr.CONTENT_EMPTY).matcher(string);							//彻底为空；
 		if (mat.find())												
 			return -3502;
-		mat = Pattern.compile(RexExpr.INCOMPLETE_2).matcher(string);
+		mat = Pattern.compile(RexExpr.CONTENT_EMPTY).matcher(string);
 		if (mat.find())
 			return -3502;
 		//}end

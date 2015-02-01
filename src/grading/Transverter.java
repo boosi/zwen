@@ -183,6 +183,9 @@ public class Transverter {
 		return instr;
 	}
 	
+	//{rem	说明文本(Remark):
+	// 1. 检查之前首先把<mfenced><mrow>联合标签拆散，分为单独的<mfenced>标签与<mrow>标签；以便于分式的格式检查（标准化分式）；
 	
+	//}end
 
 }
